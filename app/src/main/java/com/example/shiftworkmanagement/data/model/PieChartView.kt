@@ -1,4 +1,4 @@
-package com.example.shiftworkmanagement.model
+package com.example.shiftworkmanagement.data.model
 
 import android.content.Context
 import android.graphics.Canvas

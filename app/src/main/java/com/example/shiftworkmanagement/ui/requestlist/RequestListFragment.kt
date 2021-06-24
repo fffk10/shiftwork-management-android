@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shiftworkmanagement.databinding.FragmentRequestListBinding
-import com.example.shiftworkmanagement.model.RecyclerViewAdapter
-import com.example.shiftworkmanagement.model.Request
+import com.example.shiftworkmanagement.data.model.RecyclerViewAdapter
+import com.example.shiftworkmanagement.data.model.Request
 import java.time.LocalDate
 import java.time.LocalDateTime
 

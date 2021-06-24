@@ -8,10 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.shiftworkmanagement.databinding.FragmentHomeBinding
-import com.example.shiftworkmanagement.model.PieChartView
+import com.example.shiftworkmanagement.data.model.PieChartView
 
 class HomeFragment : Fragment() {
 

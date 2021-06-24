@@ -1,4 +1,4 @@
-package com.example.shiftworkmanagement.model
+package com.example.shiftworkmanagement.data.model
 
 import kotlinx.serialization.*
 import java.time.LocalDate
