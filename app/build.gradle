@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.10'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -34,12 +35,17 @@ android {
     buildFeatures {
         viewBinding true
     }
+    kapt {
+        generateStubs = true
+    }
 }
 
 dependencies {
-
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.core:core-ktx:1.5.0'
+    implementation 'com.android.support:design:27.1.1'
     implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation 'androidx.activity:activity-ktx:1.2.3'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
@@ -55,6 +61,8 @@ dependencies {
     implementation 'jp.co.sankosc:webapi-client:1.1.0'
     implementation 'androidx.annotation:annotation:1.2.0'
     implementation 'com.google.code.gson:gson:2.3.1'
+    implementation 'com.jakewharton:butterknife:10.2.3'
+    kapt "com.jakewharton:butterknife-compiler:10.2.3"
     api files('libs/NCMB.jar')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

@@ -1,5 +1,6 @@
 package com.example.shiftworkmanagement
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import com.google.android.material.navigation.NavigationView
@@ -31,13 +32,15 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.appBarMain.toolbar)
+
         // NCMBのAPIキーの設定とSDKの初期化
         NCMB.initialize(this.applicationContext, APP_KEY, CLIENT_KEY)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        setSupportActionBar(binding.appBarMain.toolbar)
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
