@@ -14,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.example.shiftworkmanagement.data.model.PasswordValidator
 import com.nifcloud.mbaas.core.NCMBException
 import com.nifcloud.mbaas.core.NCMBUser
 
@@ -21,12 +22,16 @@ class LoginActivity : AppCompatActivity() {
 
     @BindView(R.id.input_name)
     lateinit var _nameText: EditText
+
     @BindView(R.id.input_password)
     lateinit var _passwordText: EditText
+
     @BindView(R.id.btn_login)
     lateinit var _loginButton: Button
+
     @BindView(R.id.link_signup)
     lateinit var _signupLink: TextView
+
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +58,9 @@ class LoginActivity : AppCompatActivity() {
 //        startForResult.launch(SignupActivity.createIntent(this))
     }
 
+    /**
+     * ログインボタンで実行
+     */
     fun login() {
         Log.d(TAG, "Login")
 
@@ -63,8 +71,10 @@ class LoginActivity : AppCompatActivity() {
 
         _loginButton?.isEnabled = false
 
-        val progressDialog = ProgressDialog(this@LoginActivity,
-            R.style.AppTheme_Dark_Dialog)
+        val progressDialog = ProgressDialog(
+            this@LoginActivity,
+            R.style.AppTheme_Dark_Dialog
+        )
         progressDialog.isIndeterminate = true
         progressDialog.setMessage("Authenticating...")
         progressDialog.show()
@@ -87,7 +97,8 @@ class LoginActivity : AppCompatActivity() {
                             onLoginSuccess()
                             // onLoginFailed();
                             progressDialog.dismiss()
-                        }, 3000)
+                        }, 3000
+                    )
                 }
             }
         } catch (e: NCMBException) {
@@ -112,12 +123,17 @@ class LoginActivity : AppCompatActivity() {
         _loginButton?.isEnabled = true
     }
 
-    fun validate(): Boolean {
+    /**
+     * ログインできるかをチェック
+     */
+    private fun validate(): Boolean {
         var valid = true
 
+        // 入力したusernameとpasswordを判定
         val name = _nameText?.text.toString()
         val password = _passwordText?.text.toString()
 
+        // usernameが空かを確認
         if (name.isEmpty()) {
             _nameText?.error = "enter username"
             valid = false
@@ -125,11 +141,15 @@ class LoginActivity : AppCompatActivity() {
             _nameText.error = null
         }
 
-        if (password.isEmpty() || password.length < 4 || password.length > 10) {
-            _passwordText?.error = "between 4 and 10 alphanumeric characters"
+        val validatePass = PasswordValidator()
+
+        if (password.isEmpty() || validatePass.validate(password)) {
+            _passwordText?.error = "8文字以上24文字以下の半角英数字で入力してください"
             valid = false
-        } else {
+        } else if (password.isEmpty()) {
             _passwordText?.error = null
+        } else {
+
         }
 
         return valid

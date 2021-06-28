@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.example.shiftworkmanagement.data.model.PasswordValidator
 import com.nifcloud.mbaas.core.NCMBUser
 
 class SignupActivity : AppCompatActivity() {
@@ -109,14 +110,16 @@ class SignupActivity : AppCompatActivity() {
         val password = _passwordText!!.text.toString()
 
         if (name.isEmpty() || name.length < 3) {
-            _nameText!!.error = "at least 3 characters"
+            _nameText!!.error = "3文字以上入力してください’"
             valid = false
         } else {
             _nameText!!.error = null
         }
 
-        if (password.isEmpty() || password.length < 4 || password.length > 10) {
-            _passwordText!!.error = "between 4 and 10 alphanumeric characters"
+        val validatePass = PasswordValidator()
+
+        if (password.isEmpty() || validatePass.validate(password)) {
+            _passwordText?.error = "8文字以上24文字以下の半角英数字で入力してください"
             valid = false
         } else {
             _passwordText!!.error = null
