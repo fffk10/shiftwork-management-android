@@ -1,31 +1,35 @@
 package com.example.shiftworkmanagement.ui.requestshift
 
-import android.app.DatePickerDialog
+import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.TimePickerDialog
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
-import android.widget.TimePicker
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
+import com.applandeo.materialcalendarview.listeners.OnDayClickListener
+import com.example.shiftworkmanagement.R
 import com.example.shiftworkmanagement.databinding.FragmentRequestShiftBinding
-import org.w3c.dom.Text
-import java.text.SimpleDateFormat
+import com.example.shiftworkmanagement.ui.parts.TimeSelectDialogFragment
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+/**
+ * シフト申請用画面
+ */
 class RequestShiftFragment : Fragment() {
 
     private lateinit var requestShiftViewModel: RequestShiftViewModel
     private var _binding: FragmentRequestShiftBinding? = null
     private val binding get() = _binding!!
+
+    /**
+     * 申請情報のプロパティ
+     */
     private var year: Int? = null
     private var month: Int? = null
     private var day: Int? = null
@@ -34,6 +38,7 @@ class RequestShiftFragment : Fragment() {
     private var endHour: Int? = null
     private var endMinute: Int? = null
 
+    @SuppressLint("ResourceAsColor")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,41 +50,46 @@ class RequestShiftFragment : Fragment() {
 
         // 現在時刻を取得
         val now = LocalDateTime.now()
+//        binding.selectDateText.text = "${now.year}/${now.monthValue}/${now.dayOfMonth}"
 
+        val timeFormat = DateTimeFormatter.ofPattern("HH:mm")
 
-        binding.selectDateText.text = "${now.year}/${now.monthValue}/${now.dayOfMonth}"
-
-        val timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss")
-
-        binding.startTime.text = "${now.toLocalTime().format(timeFormat)}"
-        binding.endTime.text = "${now.toLocalTime().format(timeFormat)}"
+//        binding.startTime.text = "${now.toLocalTime().format(timeFormat)}"
+//        binding.endTime.text = "${now.toLocalTime().format(timeFormat)}"
 
         // カレンダーの日付選択をシフト申請日に
-        binding.calendarView.setOnDateChangeListener { _, year, month, day ->
-            this.year = year
-            this.month = month
-            this.day = day
-
-            binding.startTime.setTextColor(Color.WHITE)
-            binding.startTimeTitle.setTextColor(Color.WHITE)
-            binding.endTime.setTextColor(Color.WHITE)
-            binding.endTimeTitle.setTextColor(Color.WHITE)
-
-            binding.startTimeTitle.setOnClickListener {
-                showTimePickerDialog(binding.root, true)
-            }
-            binding.startTime.setOnClickListener {
-                showTimePickerDialog(binding.root, true)
+        binding.calendarView.setOnDayClickListener {
+            OnDayClickListener { eventDay ->
+                val nowCalendar = eventDay.calendar
+                this.year = nowCalendar.get(Calendar.YEAR)
+                this.month = nowCalendar.get(Calendar.MONTH) + 1
+                this.day = nowCalendar.get(Calendar.DATE)
             }
 
-            binding.endTimeTitle.setOnClickListener {
-                showTimePickerDialog(binding.root, false)
-            }
-            binding.endTime.setOnClickListener {
-                showTimePickerDialog(binding.root, false)
-            }
-            binding.selectDateText.text = "$year/${month + 1}/$day"
+            TimeSelectDialogFragment().show(childFragmentManager, TimeSelectDialogFragment::class.simpleName)
+
+//            binding.startTime.setTextColor(R.color.jet)
+//            binding.startTimeTitle.setTextColor(R.color.jet)
+//            binding.endTime.setTextColor(R.color.jet)
+//            binding.endTimeTitle.setTextColor(R.color.jet)
+
+//            binding.startTimeTitle.setOnClickListener {
+//                showTimePickerDialog(binding.root, true)
+//            }
+//            binding.startTime.setOnClickListener {
+//                showTimePickerDialog(binding.root, true)
+//            }
+//
+//            binding.endTimeTitle.setOnClickListener {
+//                showTimePickerDialog(binding.root, false)
+//            }
+//            binding.endTime.setOnClickListener {
+//                showTimePickerDialog(binding.root, false)
+//            }
+//            binding.selectDateText.text = "$year/${month?.plus(1)}/$day"
+
         }
+
 
         return binding.root
     }
@@ -97,11 +107,11 @@ class RequestShiftFragment : Fragment() {
             if (start) {
                 startHour = hour
                 startMinute = minute
-                binding.startTime.text = "$startHour 時 $startMinute 分"
+//                binding.startTime.text = "$startHour:$startMinute"
             } else {
                 endHour = hour
                 endMinute = minute
-                binding.endTime.text = "$endHour 時 $endMinute 分"
+//                binding.endTime.text = "$endHour:$endMinute"
             }
         }
 

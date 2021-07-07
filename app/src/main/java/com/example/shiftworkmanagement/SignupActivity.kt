@@ -54,7 +54,7 @@ class SignupActivity : AppCompatActivity() {
 
         val progressDialog = ProgressDialog(
             this@SignupActivity,
-            R.style.AppTheme_Dark_Dialog
+            R.style.AppTheme
         )
         progressDialog.isIndeterminate = true
         progressDialog.setMessage("Creating Account...")

@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.example.shiftworkmanagement.data.model.PasswordValidator
+import com.nifcloud.mbaas.core.NCMB
 import com.nifcloud.mbaas.core.NCMBException
 import com.nifcloud.mbaas.core.NCMBUser
 
@@ -32,10 +33,20 @@ class LoginActivity : AppCompatActivity() {
     @BindView(R.id.link_signup)
     lateinit var _signupLink: TextView
 
+    /**
+     * ログイン用のAPIキーとクライアントキー
+     */
+    private val APP_KEY = "3b55125d6656014c8e9b380cf8b99536b7a26f04d4467446c6a2fb1facaa4caf"
+    private val CLIENT_KEY = "c8976e13d0e3e662142f2823a541fcbf3bd442d42fbcc3f327279b17c8e197a4"
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.AppTheme)
         setContentView(R.layout.activity_login)
+
+        // NCMBのAPIキーの設定とSDKの初期化
+        NCMB.initialize(this.applicationContext, APP_KEY, CLIENT_KEY)
+
         ButterKnife.bind(this)
 
         _loginButton.setOnClickListener { login() }
@@ -55,7 +66,6 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
             }
-//        startForResult.launch(SignupActivity.createIntent(this))
     }
 
     /**
@@ -73,7 +83,7 @@ class LoginActivity : AppCompatActivity() {
 
         val progressDialog = ProgressDialog(
             this@LoginActivity,
-            R.style.AppTheme_Dark_Dialog
+            R.style.AppTheme
         )
         progressDialog.isIndeterminate = true
         progressDialog.setMessage("Authenticating...")
@@ -97,6 +107,8 @@ class LoginActivity : AppCompatActivity() {
                             onLoginSuccess()
                             // onLoginFailed();
                             progressDialog.dismiss()
+                            val intent = Intent(this, MainActivity::class.java)
+                            startActivity(intent)
                         }, 3000
                     )
                 }
